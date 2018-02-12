@@ -1,0 +1,21 @@
+https://www.cnblogs.com/zlslch/p/6474424.html
+
+settings是修改分片和副本数的。
+	curl -XGET http://192.168.80.10:9200/zhouls/_settings?pretty
+
+	创建：curl -XPUT '192.168.80.10:9200/liuch/' -d'{"settings":{"number_of_shards":3,"number_of_replicas":0}}'
+	修改：curl -XPUT '192.168.80.10:9200/zhouls/_settings' -d'{"index":{"number_of_replicas":1}}'
+	不存在索引时,可以指定副本和分片，如果已经存在,则只能修改副本。在创建新的索引库时，可以指定索引分片的副本数。默认是1
+
+mappings是修改字段和类型的。
+	curl -XGET http://192.168.80.10:9200/zhouls/emp/_mapping?pretty
+
+	mappings修改字段相关属性
+		例如：字段类型，使用哪种分词工具啊等，如下：注意：下面可以使用indexAnalyzer定义分词器，也可以使用index_analyzer定义分词器
+	操作不存在的索引
+　　		curl -XPUT 'http://192.168.80.10:9200/zhouls' -d'{"mappings":{"emp":{"properties":{"name":{"type":"string","analyzer": "ik_max_word"}}}}}'
+	操作已存在的索引
+　　		curl -XPOST http://192.168.80.10:9200/zhouls/emp/_mapping -d'{"properties":{"name":{"type":"string","analyzer": "ik_max_word"}}}'
+
+
+curl -XPOST 'http://master:9200/tv' -d @tvcount.json
